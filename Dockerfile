@@ -1,6 +1,10 @@
-FROM python:3.7
+FROM python:3.7-alpine
 
-RUN python -m pip install -U pip poetry
+ENV PYTHONDONTWRITEBYTECODE 1
+
+RUN apk add --no-cache --virtual .build-deps gcc libc-dev libffi-dev openssl-dev make \
+    && python -m pip install -U pip poetry \
+    && apk del .build-deps gcc libc-dev libffi-dev openssl-dev make
 
 WORKDIR /src
 
